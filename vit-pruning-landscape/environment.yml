@@ -1,0 +1,18 @@
+name: vit-prune
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pytorch>=2.1
+  - torchvision>=0.16
+  - pytorch-cuda=12.1
+  - numpy
+  - matplotlib
+  - tqdm
+  - scipy
+  - pip
+  - pip:
+    - timm>=1.0.0
