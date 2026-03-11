@@ -68,7 +68,18 @@ bash scripts/02_analyze_all.sh
 - Linear mode connectivity between fine-tuned and scratch models
 
 ## Results
+**Accuracy: Fine-tuning vs. Scratch**
+Table 4.2. Head+MLP pruned DeiT-Small on CIFAR-100. The 25–29 point gap directly contradicts Liu et al.’s findings for
+CNNs.
+| Model            | Params | Fine-tuned | Scratch-E | Scratch-B |
+|------------------|-------:|-----------:|----------:|----------:|
+| Unpruned DeiT-S  | 21.7M  | 88.53%     | ---       | ---       |
+| Prune-30%        | 14.6M  | **83.60%** | 54.20%    | 55.04%    |
+| Prune-50%        | 11.1M  | **79.75%** | 54.16%    | 54.74%    |
+
 **Hessian Eigenspectrum**
+Table 4.3. Hessian analysis. The fine-tuned model occupies the sharpest minimum (𝜆max = 1444) yet achieves the best accuracy
+among pruned models.
 | Model                      | λ_max | Top-3 eigenvalues   | Trace | Test Acc |
 |----------------------------|------:|---------------------|------:|---------:|
 | Unpruned (fine-tuned)      | 1085  | 1085, 1027, 706     | 228   | 88.53%   |
@@ -76,10 +87,9 @@ bash scripts/02_analyze_all.sh
 | Prune-50% (Scratch-E)      | 268   | 268, 244, 240       | 2805  | 54.16%   |
 | Prune-50% (Scratch-B)      | 298   | 298, 210, 205       | 1753  | 54.74%   |
 
-Table 4.3. Hessian analysis. The fine-tuned model occupies the sharpest minimum (𝜆max = 1444) yet achieves the best accuracy
-among pruned models.
-
 **Mode Connectivity**
+Table 4.4. Linear mode connectivity. Fine-tuned and scratch models occupy completely disconnected basins; both scratch
+models lie in the same basin.
 | Pair                         | Barrier | Min acc. along path | Same basin? |
 |------------------------------|---------|---------------------|-------------|
 | p50: FT ↔ Scratch-B          | 2.54    | 1.35%               | No          |
@@ -87,23 +97,17 @@ among pruned models.
 | p30: FT ↔ Scratch-B          | 2.32    | 1.05%               | No          |
 | p50: Scratch-E ↔ Scratch-B   | **0.00**| 53.50%              | **Yes**     |
 
-Table 4.4. Linear mode connectivity. Fine-tuned and scratch models occupy completely disconnected basins; both scratch
-models lie in the same basin.
-
+Figure 4.1. Fine-tuned vs. Scratch-B—accuracy collapses to ∼1% at the midpoint, confirming disconnected basins. 
 <img width="1783" height="667" alt="image" src="https://github.com/user-attachments/assets/35f1bdc8-158f-4f5f-9621-4c96f9a16441" />
 
-Fine-tuned vs. Scratch-B—accuracy collapses to ∼1% at the midpoint, confirming disconnected basins. 
-
+Figure 4.1. Scratch-E vs. Scratch-B—monotonically connected with zero barrier.
 <img width="1784" height="667" alt="image" src="https://github.com/user-attachments/assets/f83c2f62-992a-43db-9317-4e26b453ef29" />
 
-Scratch-E vs. Scratch-B—monotonically connected with zero barrier.
-
 **2D Loss Surfaces**
-<img width="2250" height="675" alt="image" src="https://github.com/user-attachments/assets/0a94269f-fc3a-40ca-8401-523239e6fe9e" />
-
-Left: Pruned fine-tuned with sharp, asymmetric basin, min. loss 0.98. Center: Pruned scratch with smooth,
+Figure 4.2. Left: Pruned fine-tuned with sharp, asymmetric basin, min. loss 0.98. Center: Pruned scratch with smooth,
 symmetric bowl, min. loss 2.94. Right: Unpruned fine-tuned with deep, irregular basin. The visual smoothness of the scratch
 landscape is deceptive.
+<img width="2250" height="675" alt="image" src="https://github.com/user-attachments/assets/0a94269f-fc3a-40ca-8401-523239e6fe9e" />
 
 ## Running Individual Experiments
 
