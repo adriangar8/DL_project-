@@ -1,5 +1,5 @@
 
-# Vision Transformer Pruning Pipeline (DeiT on CIFAR-100)
+## Vision Transformer Pruning Pipeline (DeiT on CIFAR-100)
 
 This project implements a structured pruning pipeline for Vision Transformers (ViT) using a DeiT-style architecture trained on CIFAR-100.
 
@@ -27,7 +27,7 @@ All results are saved to CSV files for reproducibility.
 
 ---
 
-# Project Structure
+## Project Structure
 
 ```
 .
@@ -41,20 +41,31 @@ All results are saved to CSV files for reproducibility.
 ```
 ---
 
+
+## Results
+
+| Run Name | Stage | Prune Method | Top-1 (%) | Top-5 (%) | Params | FLOPs / Forward | Latency Batch (ms) | Epochs | Best Epoch | Best Top-1 (%) | Best Top-5 (%) |
+|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| original_dense | dense | none | 72.86 | 90.65 | 21,704,164 | 4,250,328,960 | 47.852 | 200 | 182 | 72.83 | 90.43 |
+| methodA_scratch | scratch_pruned | savit_taylor | 73.41 | 90.41 | 15,202,276 | 2,970,667,392 | 36.881 | 200 | 181 | 73.52 | 90.34 |
+| methodA_finetune | finetune_pruned | savit_taylor | 72.42 | 90.71 | 15,202,276 | 2,970,667,392 | 36.965 | 50 | 47 | 72.55 | 90.55 |
+| methodB_finetune_noES | finetune_pruned | xpruner_masks | 72.67 | 90.55 | 15,202,276 | 2,970,667,392 | 36.825 | 50 | 50 | 72.67 | 90.55 |
+| methodB_scratch | scratch_pruned | xpruner_masks | 73.24 | 90.60 | 15,202,276 | 2,970,667,392 | 36.890 | 200 | 186 | 73.40 | 90.58 |
+
 # Step-by-Step Instructions
 
 Results are already available in 'runs' folder. If you want to recompute, follow the following steps.
 
 ---
 
-# Step 1 — Install Requirements
+## Step 1 — Install Requirements
 
 ```
 pip install torch torchvision timm fvcore tqdm
 ```
 ---
 
-# Step 2 — Train the Dense Model From Scratch
+## Step 2 — Train the Dense Model From Scratch
 
 
 ```
@@ -69,14 +80,14 @@ runs/dense/dense_baseline/best.pt
 
 ---
 
-# Step 3 — Generate Pruning Spec Using Method A (SAViT-Style Taylor)
+## Step 3 — Generate Pruning Spec Using Method A (SAViT-Style Taylor)
 
 ```
 python run_deit_cifar100_pipeline.py   --stage make_spec   --prune_method savit_taylor   --run_name methodA_spec   --dense_ckpt ./runs/dense/dense_baseline/best.pt   --data_dir ./data   --root_out ./runs   --model deit_small_patch16_224   --image_size 224   --num_classes 100   --batch_size 128   --num_workers 8   --depth_keep 10   --mlp_keep 0.75   --calib_batches 20   --randaugment   --ra_n 2   --ra_m 9   --amp
 ```
 ---
 
-# Step 4 — Generate Pruning Spec Using Method B (X-Pruner Masks)
+## Step 4 — Generate Pruning Spec Using Method B (X-Pruner Masks)
 
 ```
 python run_deit_cifar100_pipeline.py   --stage make_spec   --prune_method xpruner_masks   --run_name methodB_spec   --dense_ckpt ./runs/dense/dense_baseline/best.pt   --data_dir ./data   --root_out ./runs   --model deit_small_patch16_224   --image_size 224   --num_classes 100   --batch_size 128   --num_workers 8   --depth_keep 10   --mlp_keep 0.75   --mask_train_epochs 2   --mask_lr 5e-3   --mask_steps_per_epoch 200   --randaugment   --ra_n 2   --ra_m 9   --amp
@@ -84,33 +95,33 @@ python run_deit_cifar100_pipeline.py   --stage make_spec   --prune_method xprune
 
 ---
 
-# Step 5 — Fine-Tune Method A Pruned Model
+## Step 5 — Fine-Tune Method A Pruned Model
 
 ```
 python run_deit_cifar100_pipeline.py   --stage finetune_pruned   --run_name methodA_finetune   --dense_ckpt ./runs/dense/dense_baseline/best.pt   --spec_path ./runs/savit_taylor/make_spec/methodA_spec/spec.json   --data_dir ./data   --root_out ./runs   --epochs 100   --randaugment   --ra_n 2   --ra_m 9   --amp
 ```
 ---
 
-# Step 6 — Train Method A Pruned Architecture From Scratch
+## Step 6 — Train Method A Pruned Architecture From Scratch
 ```
 python run_deit_cifar100_pipeline.py   --stage scratch_pruned   --run_name methodA_scratch   --spec_path ./runs/savit_taylor/make_spec/methodA_spec/spec.json   --data_dir ./data   --root_out ./runs   --epochs 100   --randaugment   --ra_n 2   --ra_m 9   --amp
 ```
 ---
 
-# Step 7 — Fine-Tune Method B Pruned Model
+## Step 7 — Fine-Tune Method B Pruned Model
 
 ```
 python run_deit_cifar100_pipeline.py   --stage finetune_pruned   --run_name methodB_finetune   --dense_ckpt ./runs/dense/dense_baseline/best.pt   --spec_path ./runs/xpruner_masks/make_spec/methodB_spec/spec.json   --data_dir ./data   --root_out ./runs   --epochs 100   --randaugment   --ra_n 2   --ra_m 9   --amp
 ```
 ---
 
-# Step 8 — Train Method B Pruned Architecture From Scratch
+## Step 8 — Train Method B Pruned Architecture From Scratch
 ```
 python run_deit_cifar100_pipeline.py   --stage scratch_pruned   --run_name methodB_scratch   --spec_path ./runs/xpruner_masks/make_spec/methodB_spec/spec.json   --data_dir ./data   --root_out ./runs   --epochs 100   --randaugment   --ra_n 2   --ra_m 9   --amp
 ```
 ---
 
-# Metrics Logged
+## Metrics Logged
 
 Each experiment records:
 
