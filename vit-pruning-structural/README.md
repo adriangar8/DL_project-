@@ -3,6 +3,7 @@
 
 This project implements a structured pruning pipeline for Vision Transformers (ViT) using a DeiT-style architecture trained on CIFAR-100.
 
+
 The repository allows you to:
 
 1. Train a dense ViT model from scratch
@@ -31,24 +32,18 @@ All results are saved to CSV files for reproducibility.
 ```
 .
 ├── vit_pruning_spec.py
-
 ├── run_deit_cifar100_pipeline.py
-
 ├── runs/
-
 │   ├── dense/
-
 │   ├── savit_taylor/
-
 │   └── xpruner_masks/
-
 └── data/
 ```
 ---
 
 # Step-by-Step Instructions
 
-Follow these steps in order.
+Results are already available in 'runs' folder. If you want to recompute, follow the following steps.
 
 ---
 
