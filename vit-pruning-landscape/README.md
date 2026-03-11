@@ -67,6 +67,19 @@ bash scripts/02_analyze_all.sh
 - Hessian top eigenvalues (sharpness metric)
 - Linear mode connectivity between fine-tuned and scratch models
 
+**Mode Connectivity**
+<img width="1783" height="667" alt="image" src="https://github.com/user-attachments/assets/35f1bdc8-158f-4f5f-9621-4c96f9a16441" />
+Fine-tuned vs. Scratch-B—accuracy collapses to ∼1% at the midpoint, confirming disconnected basins. 
+
+<img width="1784" height="667" alt="image" src="https://github.com/user-attachments/assets/f83c2f62-992a-43db-9317-4e26b453ef29" />
+Scratch-E vs. Scratch-B—monotonically connected with zero barrier.
+
+**2D Loss Surfaces**
+<img width="2250" height="675" alt="image" src="https://github.com/user-attachments/assets/0a94269f-fc3a-40ca-8401-523239e6fe9e" />
+Left: Pruned fine-tuned with sharp, asymmetric basin, min. loss 0.98. Center: Pruned scratch with smooth,
+symmetric bowl, min. loss 2.94. Right: Unpruned fine-tuned with deep, irregular basin. The visual smoothness of the scratch
+landscape is deceptive.
+
 ## Running Individual Experiments
 
 ```bash
