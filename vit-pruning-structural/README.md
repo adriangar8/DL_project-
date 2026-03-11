@@ -28,6 +28,7 @@ All results are saved to CSV files for reproducibility.
 
 # Project Structure
 
+`
 .
 ├── vit_pruning_spec.py
 ├── run_deit_cifar100_pipeline.py
@@ -36,7 +37,7 @@ All results are saved to CSV files for reproducibility.
 │   ├── savit_taylor/
 │   └── xpruner_masks/
 └── data/
-
+`
 ---
 
 # Step-by-Step Instructions
