@@ -67,7 +67,21 @@ bash scripts/02_analyze_all.sh
 - Hessian top eigenvalues (sharpness metric)
 - Linear mode connectivity between fine-tuned and scratch models
 
+## Results
 **Mode Connectivity**
+::: {#tab:connectivity}
+  **Pair**                                      **Barrier**   **Min acc. along path**   **Same basin?**
+  -------------------------------------------- ------------- ------------------------- -----------------
+  p50: FT $\leftrightarrow$ Scratch-B              2.54                1.35%                  No
+  p50: FT $\leftrightarrow$ Scratch-E              3.01                1.25%                  No
+  p30: FT $\leftrightarrow$ Scratch-B              2.32                1.05%                  No
+  p50: Scratch-E $\leftrightarrow$ Scratch-B     **0.00**             53.50%                **Yes**
+
+  : Linear mode connectivity. Fine-tuned and scratch models occupy
+  completely disconnected basins; both scratch models lie in the same
+  basin.
+:::
+
 <img width="1783" height="667" alt="image" src="https://github.com/user-attachments/assets/35f1bdc8-158f-4f5f-9621-4c96f9a16441" />
 Fine-tuned vs. Scratch-B—accuracy collapses to ∼1% at the midpoint, confirming disconnected basins. 
 
